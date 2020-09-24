@@ -2,31 +2,29 @@ from tkinter import *
 from tkinter import ttk
 
 
-def write_one():
-    global screen_label
-    screen_label.config(text="1")
-
-
 def add_value_to_screen(value):
-    global screen_label
-
-    if value == "C":
-        screen_label.config(text="0")
-        return
-
     prev_text = screen_label.cget("text")
 
     if prev_text == "0" and value == 0:
         return
 
-    if isinstance(value, int):
-        if prev_text == "0":
-            prev_text = ""
-        screen_label.config(text=f"{prev_text}{value}")
-    elif prev_text.strip()[-1] in ["+", "-", "/", "*"] and isinstance(value, str):
+    if prev_text == "0":
+        prev_text = ""
+    screen_label.config(text=f"{prev_text}{value}")
+
+
+def add_operator_to_screen(operator):
+    prev_text = screen_label.cget("text")
+
+    if prev_text.strip()[-1] in ["+", "-", "/", "*"]:
         return
     else:
-        screen_label.config(text=f"{prev_text} {value} ")
+        screen_label.config(text=f"{prev_text} {operator} ")
+
+
+def reset_calculator(value):
+    if value == "C":
+        screen_label.config(text="0")
 
 
 root = Tk()
@@ -47,11 +45,11 @@ button_frame = ttk.Frame(mainframe)
 button_frame.grid(column=0, row=1)
 
 
-ttk.Button(button_frame, text="+", command=lambda: add_value_to_screen("+")).grid(row=0, column=3)
-ttk.Button(button_frame, text="-", command=lambda: add_value_to_screen("-")).grid(row=0, column=2)
-ttk.Button(button_frame, text="*", command=lambda: add_value_to_screen("*")).grid(row=0, column=1)
-ttk.Button(button_frame, text="/", command=lambda: add_value_to_screen("/")).grid(row=0, column=0)
-ttk.Button(button_frame, text="C", command=lambda: add_value_to_screen("C")).grid(row=1, column=3)
+ttk.Button(button_frame, text="+", command=lambda: add_operator_to_screen("+")).grid(row=0, column=3)
+ttk.Button(button_frame, text="-", command=lambda: add_operator_to_screen("-")).grid(row=0, column=2)
+ttk.Button(button_frame, text="*", command=lambda: add_operator_to_screen("*")).grid(row=0, column=1)
+ttk.Button(button_frame, text="/", command=lambda: add_operator_to_screen("/")).grid(row=0, column=0)
+ttk.Button(button_frame, text="C", command=lambda: reset_calculator("C")).grid(row=1, column=3)
 ttk.Button(button_frame, text="=", padding="1 27 1 25").grid(row=2, column=3, rowspan=3)
 
 ttk.Button(button_frame, text="0", command=lambda: add_value_to_screen(0), padding="77 1 77 1")\
