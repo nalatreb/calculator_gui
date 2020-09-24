@@ -22,9 +22,8 @@ def add_operator_to_screen(operator):
         screen_label.config(text=f"{prev_text} {operator} ")
 
 
-def reset_calculator(value):
-    if value == "C":
-        screen_label.config(text="0")
+def reset_calculator():
+    screen_label.config(text="0")
 
 
 root = Tk()
@@ -49,7 +48,7 @@ ttk.Button(button_frame, text="+", command=lambda: add_operator_to_screen("+")).
 ttk.Button(button_frame, text="-", command=lambda: add_operator_to_screen("-")).grid(row=0, column=2)
 ttk.Button(button_frame, text="*", command=lambda: add_operator_to_screen("*")).grid(row=0, column=1)
 ttk.Button(button_frame, text="/", command=lambda: add_operator_to_screen("/")).grid(row=0, column=0)
-ttk.Button(button_frame, text="C", command=lambda: reset_calculator("C")).grid(row=1, column=3)
+ttk.Button(button_frame, text="C", command=reset_calculator).grid(row=1, column=3)
 ttk.Button(button_frame, text="=", padding="1 27 1 25").grid(row=2, column=3, rowspan=3)
 
 ttk.Button(button_frame, text="0", command=lambda: add_value_to_screen(0), padding="77 1 77 1")\
