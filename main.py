@@ -23,7 +23,8 @@ def add_operator_to_screen(operator):
 
 
 def reset_calculator():
-    screen_label.config(text="2 + 3 * 45 + 69 / 56 - 96 * 85")
+    screen_label.config(text="0")
+    function_label.config(text="")
 
 
 def get_items():
