@@ -118,7 +118,8 @@ class Calculator(Frame):
         ttk.Button(self.button_frame, text="*", command=lambda: self.add_operator_to_screen("*")).grid(row=0, column=1)
         ttk.Button(self.button_frame, text="/", command=lambda: self.add_operator_to_screen("/")).grid(row=0, column=0)
         ttk.Button(self.button_frame, text="C", command=self.reset_calculator).grid(row=1, column=3)
-        ttk.Button(self.button_frame, text="=", padding="1 27 1 25", command=self.calculate).grid(row=2, column=3, rowspan=3)
+        ttk.Button(self.button_frame, text="=", padding="1 27 1 25", command=self.calculate).grid(row=2, column=3,
+                                                                                                  rowspan=3)
 
         ttk.Button(self.button_frame, text="0", command=lambda: self.add_value_to_screen(0), padding="77 1 77 1") \
             .grid(row=4, column=0, columnspan=3)
