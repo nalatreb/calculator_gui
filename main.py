@@ -5,6 +5,7 @@ from tkinter import ttk
 class Calculator(Frame):
     def __init__(self, master=None):
         super().__init__(master)
+        self.erase = False
         self.master.title('Sample Application')
         self.grid()
         self.mainframe = ttk.Frame(self, padding="30")
@@ -23,6 +24,9 @@ class Calculator(Frame):
         self.create_widget()
 
     def add_value_to_screen(self, value):
+        if self.erase:
+            self.reset_calculator()
+
         prev_text = self.screen_label.cget("text")
 
         if prev_text == "0" and value == 0:
@@ -41,6 +45,7 @@ class Calculator(Frame):
             self.screen_label.config(text=f"{prev_text} {operator} ")
 
     def reset_calculator(self):
+        self.erase = False
         self.screen_label.config(text="0")
         self.function_label.config(text="")
 
@@ -109,6 +114,7 @@ class Calculator(Frame):
         return items[0]
 
     def calculate(self):
+        self.erase = True
         result = self.get_result()
         self.screen_label.config(text=f"{result}")
 
