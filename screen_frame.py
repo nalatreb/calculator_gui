@@ -11,7 +11,7 @@ class ScreenFrame(Frame):
         self.function_label = ttk.Label(self.screen_frame)
         self.function_label.grid()
 
-        self.screen_label = ttk.Label(self.screen_frame, text="0")
+        self.screen_label = ttk.Label(self.screen_frame, text="0", font=("Courier", 16))
         self.screen_label.grid()
 
     def add_value(self, value):

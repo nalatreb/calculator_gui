@@ -7,6 +7,11 @@ from screen_frame import ScreenFrame
 class Calculator(Frame):
     def __init__(self, master=None):
         super().__init__(master)
+        self.master.tk.call("lappend", "auto_path", "awthemes-9.4.2")
+        self.master.tk.call("package", "require", "awdark")
+        # self.master.tk.call("source", "awthemes-9.4.2/awbreeze.tcl")
+        self.style = ttk.Style()
+        self.style.theme_use("awdark")
         self.erase = False
         self.master.title("Calculator")
         self.grid()
@@ -97,10 +102,10 @@ class Calculator(Frame):
         ttk.Button(self.button_frame, text="*", command=lambda: self.add_operator_to_screen("*")).grid(row=0, column=1)
         ttk.Button(self.button_frame, text="/", command=lambda: self.add_operator_to_screen("/")).grid(row=0, column=0)
         ttk.Button(self.button_frame, text="C", command=self.reset_calculator).grid(row=1, column=3)
-        ttk.Button(self.button_frame, text="=", padding="1 27 1 25", command=self.calculate).grid(row=2, column=3,
+        ttk.Button(self.button_frame, text="=", padding="5 28 5 28", command=self.calculate).grid(row=2, column=3,
                                                                                                   rowspan=3)
 
-        ttk.Button(self.button_frame, text="0", command=lambda: self.add_value_to_screen(0), padding="77 1 77 1") \
+        ttk.Button(self.button_frame, text="0", command=lambda: self.add_value_to_screen(0), padding="70 1 68 1") \
             .grid(row=4, column=0, columnspan=3)
         ttk.Button(self.button_frame, text="1", command=lambda: self.add_value_to_screen(1)).grid(row=1, column=0)
         ttk.Button(self.button_frame, text="2", command=lambda: self.add_value_to_screen(2)).grid(row=1, column=1)
