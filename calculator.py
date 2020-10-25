@@ -17,6 +17,7 @@ class Calculator(Frame):
         self.button_frame = ttk.Frame(self.mainframe)
         self.button_frame.grid(column=0, row=1)
         self.create_widget()
+        self.items = []
 
     def add_value_to_screen(self, value):
         if self.erase:
@@ -33,7 +34,7 @@ class Calculator(Frame):
         self.screen_frame.set_screen_label("0")
         self.screen_frame.set_function_label("")
 
-    def get_items(self):
+    def set_items(self):
         items = []
         operators = ["+", "-", "*", "/"]
 
@@ -56,7 +57,7 @@ class Calculator(Frame):
         return items
 
     def get_result(self):
-        items = self.get_items()
+        items = self.set_items()
 
         if len(items) < 3:
             return items[0]
@@ -64,19 +65,9 @@ class Calculator(Frame):
         while "*" in items or "/" in items:
             index = 1
             for x in items[1:]:
-                if x == "*":
-                    items[index - 1] = items[index - 1] * items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                elif x == "/":
-                    if items[index + 1] == 0:
-                        return "error"
-                    items[index - 1] = items[index - 1] / items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                index += 1
+                if x == "/" and items[index + 1] == 0:
+                    return "error"
+                index = self.handle_arithmetic(["*", "/"], items, index, x)
 
         if len(items) == 1:
             return items[0]
@@ -84,18 +75,18 @@ class Calculator(Frame):
         while "+" in items or "-" in items:
             index = 1
             for x in items[1:]:
-                if x == "+":
-                    items[index - 1] = items[index - 1] + items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                elif x == "-":
-                    items[index - 1] = items[index - 1] - items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                index += 1
+                index = self.handle_arithmetic(["+", "-"], items, index, x)
         return items[0]
+
+    @staticmethod
+    def handle_arithmetic(arithmetics, items, index, value):
+        if value in arithmetics:
+            exec(f"items[index - 1] = items[index - 1] {value} items[index + 1]")
+            del (items[index + 1])
+            del (items[index])
+            index -= 2
+        index += 1
+        return index
 
     def calculate(self):
         self.erase = True
