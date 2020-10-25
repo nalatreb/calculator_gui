@@ -17,6 +17,7 @@ class Calculator(Frame):
         self.button_frame = ttk.Frame(self.mainframe)
         self.button_frame.grid(column=0, row=1)
         self.create_widget()
+        self.items = []
 
     def add_value_to_screen(self, value):
         if self.erase:
@@ -33,73 +34,61 @@ class Calculator(Frame):
         self.screen_frame.set_screen_label("0")
         self.screen_frame.set_function_label("")
 
-    def get_items(self):
-        items = []
+    def set_items(self):
         operators = ["+", "-", "*", "/"]
 
         text = self.screen_frame.get_screen_label()
         self.screen_frame.set_function_label(text)
         text = text.replace(" ", "")
         for x in text:
-            if len(items) == 0:
-                items.append(int(x))
+            if len(self.items) == 0:
+                self.items.append(int(x))
             elif x in operators:
-                items.append(x)
-            elif items[len(items) - 1] in operators:
-                items.append(int(x))
+                self.items.append(x)
+            elif self.items[len(self.items) - 1] in operators:
+                self.items.append(int(x))
             else:
-                items[len(items) - 1] = int(f'{items[len(items) - 1]}{x}')
+                self.items[len(self.items) - 1] = int(f'{self.items[len(self.items) - 1]}{x}')
 
-        if items[len(items) - 1] in operators:
-            items = items[:-1]
-
-        return items
+        if self.items[len(self.items) - 1] in operators:
+            self.items = self.items[:-1]
 
     def get_result(self):
-        items = self.get_items()
+        self.set_items()
 
-        if len(items) < 3:
-            return items[0]
+        if len(self.items) < 3:
+            return self.items[0]
 
-        while "*" in items or "/" in items:
+        while "*" in self.items or "/" in self.items:
             index = 1
-            for x in items[1:]:
-                if x == "*":
-                    items[index - 1] = items[index - 1] * items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                elif x == "/":
-                    if items[index + 1] == 0:
-                        return "error"
-                    items[index - 1] = items[index - 1] / items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                index += 1
+            for x in self.items[1:]:
+                if x == "/" and self.items[index + 1] == 0:
+                    return "error"
+                index = self.handle_arithmetic(["*", "/"], index, x)
 
-        if len(items) == 1:
-            return items[0]
+        if len(self.items) == 1:
+            return self.items[0]
 
-        while "+" in items or "-" in items:
+        while "+" in self.items or "-" in self.items:
             index = 1
-            for x in items[1:]:
-                if x == "+":
-                    items[index - 1] = items[index - 1] + items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                elif x == "-":
-                    items[index - 1] = items[index - 1] - items[index + 1]
-                    del (items[index + 1])
-                    del (items[index])
-                    index -= 2
-                index += 1
-        return items[0]
+            for x in self.items[1:]:
+                index = self.handle_arithmetic(["+", "-"], index, x)
+
+        return self.items[0]
+
+    def handle_arithmetic(self, arithmetics, index, value):
+        if value in arithmetics:
+            exec(f"self.items[index - 1] = self.items[index - 1] {value} self.items[index + 1]")
+            del (self.items[index + 1])
+            del (self.items[index])
+            index -= 2
+        index += 1
+        return index
 
     def calculate(self):
         self.erase = True
         result = self.get_result()
+        self.items = []
         self.screen_frame.set_screen_label(f"{result}")
 
     def create_widget(self):
