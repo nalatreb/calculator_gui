@@ -8,7 +8,7 @@ class Calculator(Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.erase = False
-        self.master.title('Sample Application')
+        self.master.title("Calculator")
         self.grid()
         self.mainframe = ttk.Frame(self, padding="30")
         self.mainframe.grid(column=0, row=0)
@@ -111,3 +111,21 @@ class Calculator(Frame):
         ttk.Button(self.button_frame, text="7", command=lambda: self.add_value_to_screen(7)).grid(row=3, column=0)
         ttk.Button(self.button_frame, text="8", command=lambda: self.add_value_to_screen(8)).grid(row=3, column=1)
         ttk.Button(self.button_frame, text="9", command=lambda: self.add_value_to_screen(9)).grid(row=3, column=2)
+
+        self.master.bind("0", lambda e: self.add_value_to_screen(0))
+        self.master.bind("1", lambda e: self.add_value_to_screen(1))
+        self.master.bind("2", lambda e: self.add_value_to_screen(2))
+        self.master.bind("3", lambda e: self.add_value_to_screen(3))
+        self.master.bind("4", lambda e: self.add_value_to_screen(4))
+        self.master.bind("5", lambda e: self.add_value_to_screen(5))
+        self.master.bind("6", lambda e: self.add_value_to_screen(6))
+        self.master.bind("7", lambda e: self.add_value_to_screen(7))
+        self.master.bind("8", lambda e: self.add_value_to_screen(8))
+        self.master.bind("9", lambda e: self.add_value_to_screen(9))
+
+        self.master.bind("+", lambda e: self.add_operator_to_screen("+"))
+        self.master.bind("-", lambda e: self.add_operator_to_screen("-"))
+        self.master.bind("*", lambda e: self.add_operator_to_screen("*"))
+        self.master.bind("/", lambda e: self.add_operator_to_screen("/"))
+        self.master.bind("<Delete>", lambda e: self.reset_calculator())
+        self.master.bind("<Return>", lambda e: self.calculate())
